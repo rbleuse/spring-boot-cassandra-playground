@@ -11,6 +11,6 @@ spring:
     request:
       timeout: 5s
   flyway-nc:
-    url: cassandra://localhost:9042/spring_boot_cassandra6?localdatacenter=dc1
+    default-schema: ${spring.cassandra.keyspace-name}
     migration-suffixes:
-      - .cql
+      - ".cql"

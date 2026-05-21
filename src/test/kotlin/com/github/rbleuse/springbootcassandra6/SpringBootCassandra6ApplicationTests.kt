@@ -12,15 +12,32 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.data.cassandra.test.autoconfigure.DataCassandraTest
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.context.annotation.Import
-import org.springframework.test.context.ContextConfiguration
+import org.testcontainers.cassandra.CassandraContainer
+import org.testcontainers.utility.DockerImageName
+import org.testcontainers.utility.MountableFile
+import java.time.Duration
 
 @DataCassandraTest
-@ContextConfiguration(initializers = [CassandraContainerInitializer::class])
 @Import(CassandraConfiguration::class, FlywayNcAutoConfiguration::class)
 class SpringBootCassandra6ApplicationTests @Autowired constructor(
     private val cqlSession: CqlSession
 ) {
+    companion object {
+        @ServiceConnection
+        val cassandra: CassandraContainer = CassandraContainer(
+            DockerImageName
+                .parse("rbleuse/apache-cassandra:6.0-alpha1")
+                .asCompatibleSubstituteFor("cassandra")
+        )
+            .withEnv("CASSANDRA_ENDPOINT_SNITCH", "GossipingPropertyFileSnitch")
+            .withCopyFileToContainer(
+                MountableFile.forHostPath("dev-tools/cassandra.yaml"),
+                "/etc/cassandra/cassandra.yaml"
+            ).withStartupTimeout(Duration.ofMinutes(2))
+    }
+
     @BeforeEach
     fun cleanup() {
         cqlSession.execute("TRUNCATE users_by_country;")
