@@ -24,19 +24,18 @@ repositories {
     }
 }
 
-extra["flyway.version"] = "12.6.1"
+extra["flyway.version"] = "12.6.2"
 
 dependencyManagement {
     imports {
-        mavenBom("io.github.rbleuse:spring-boot-starter-flyway-nc-dependencies:1.0.0-SNAPSHOT")
+        mavenBom("io.github.rbleuse:spring-boot-flyway-nc-dependencies:1.0.0-SNAPSHOT")
     }
 }
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-cassandra")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("io.github.rbleuse:spring-boot-starter-flyway-nc")
-    implementation("org.flywaydb:flyway-database-nc-cassandra")
+    implementation("io.github.rbleuse:spring-boot-starter-flyway-nc-cassandra")
 
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
@@ -46,6 +45,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers-cassandra")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter")
     testImplementation("io.kotest:kotest-assertions-core-jvm:6.1.11")
+    testImplementation("io.github.rbleuse:spring-boot-starter-flyway-nc-cassandra-test")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

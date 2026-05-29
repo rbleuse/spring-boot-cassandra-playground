@@ -4,7 +4,7 @@ import com.datastax.oss.driver.api.core.ConsistencyLevel
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.SimpleStatement
 import com.datastax.oss.driver.api.core.servererrors.InvalidQueryException
-import io.github.rbleuse.flywaync.FlywayNcAutoConfiguration
+import io.github.rbleuse.flywaync.cassandra.CassandraFlywayNcAutoConfiguration
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.throwable.shouldHaveMessage
@@ -12,15 +12,32 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.data.cassandra.test.autoconfigure.DataCassandraTest
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.context.annotation.Import
-import org.springframework.test.context.ContextConfiguration
+import org.testcontainers.cassandra.CassandraContainer
+import org.testcontainers.utility.DockerImageName
+import org.testcontainers.utility.MountableFile
+import java.time.Duration
 
 @DataCassandraTest
-@ContextConfiguration(initializers = [CassandraContainerInitializer::class])
-@Import(CassandraConfiguration::class, FlywayNcAutoConfiguration::class)
+@Import(CassandraConfiguration::class, CassandraFlywayNcAutoConfiguration::class)
 class SpringBootCassandra6ApplicationTests @Autowired constructor(
     private val cqlSession: CqlSession
 ) {
+    companion object {
+        @ServiceConnection
+        val cassandra: CassandraContainer = CassandraContainer(
+            DockerImageName
+                .parse("rbleuse/apache-cassandra:6.0-alpha1")
+                .asCompatibleSubstituteFor("cassandra")
+        )
+            .withEnv("CASSANDRA_ENDPOINT_SNITCH", "GossipingPropertyFileSnitch")
+            .withCopyFileToContainer(
+                MountableFile.forHostPath("dev-tools/cassandra.yaml"),
+                "/etc/cassandra/cassandra.yaml"
+            ).withStartupTimeout(Duration.ofMinutes(2))
+    }
+
     @BeforeEach
     fun cleanup() {
         cqlSession.execute("TRUNCATE users_by_country;")
