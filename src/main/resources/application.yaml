@@ -12,5 +12,3 @@ spring:
       timeout: 5s
   flyway-nc:
     default-schema: ${spring.cassandra.keyspace-name}
-    migration-suffixes:
-      - ".cql"
