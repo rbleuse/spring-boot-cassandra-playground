@@ -5,7 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
 }
 
-group = "com.github.rbleuse"
+group = "io.github.rbleuse"
 version = "0.0.1-SNAPSHOT"
 description = "spring-boot-cassandra6"
 
