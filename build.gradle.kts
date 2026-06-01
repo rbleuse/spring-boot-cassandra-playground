@@ -24,7 +24,7 @@ repositories {
     }
 }
 
-extra["flyway.version"] = "12.6.2"
+extra["flyway.version"] = "12.7.0"
 
 dependencyManagement {
     imports {
