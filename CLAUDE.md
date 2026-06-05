@@ -8,7 +8,7 @@ Build and test (Gradle wrapper, Java 25 toolchain auto-provisioned):
 
 - `./gradlew build` — compile + test + assemble
 - `./gradlew test` — run all tests
-- `./gradlew test --tests "com.github.rbleuse.springbootcassandra6.SpringBootCassandra6ApplicationTests.contextLoads"` — single test
+- `./gradlew test --tests "com.github.rbleuse.playground.SpringBootCassandraPlaygroundApplicationTests.contextLoads"` — single test
 - `./gradlew bootRun` — run the app (Spring Boot's docker-compose integration auto-starts `compose.yaml`)
 - `./gradlew ktlintCheck` / formatting tasks are not configured
 

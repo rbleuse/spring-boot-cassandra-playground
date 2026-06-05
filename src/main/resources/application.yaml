@@ -1,10 +1,10 @@
 spring:
   application:
-    name: spring-boot-cassandra6
+    name: spring-boot-cassandra-playground
   cassandra:
     contact-points: localhost:9042
     local-datacenter: dc1
-    keyspace-name: spring_boot_cassandra6
+    keyspace-name: spring_boot_cassandra_playground
     schema-action: none
     connection:
       init-query-timeout: 5s

@@ -1,1 +1,1 @@
-rootProject.name = "spring-boot-cassandra6"
+rootProject.name = "spring-boot-cassandra-playground"

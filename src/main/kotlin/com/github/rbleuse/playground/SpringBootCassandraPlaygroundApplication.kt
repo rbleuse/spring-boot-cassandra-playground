@@ -1,11 +1,11 @@
-package com.github.rbleuse.springbootcassandra6
+package com.github.rbleuse.playground
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class SpringBootCassandra6Application
+class SpringBootCassandraPlaygroundApplication
 
 fun main(args: Array<String>) {
-    runApplication<SpringBootCassandra6Application>(*args)
+    runApplication<SpringBootCassandraPlaygroundApplication>(*args)
 }

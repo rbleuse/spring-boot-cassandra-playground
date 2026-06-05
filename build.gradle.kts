@@ -7,7 +7,7 @@ plugins {
 
 group = "io.github.rbleuse"
 version = "0.0.1-SNAPSHOT"
-description = "spring-boot-cassandra6"
+description = "spring-boot-cassandra-playground"
 
 java {
     toolchain {

@@ -1,4 +1,4 @@
-package com.github.rbleuse.springbootcassandra6
+package com.github.rbleuse.playground
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.CqlSessionBuilder

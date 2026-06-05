@@ -1,4 +1,4 @@
-# spring-boot-cassandra6
+# spring-boot-cassandra-playground
 
 Minimal Spring Boot 4 + Kotlin demo running Spring Data Cassandra against **Apache Cassandra 6.0-alpha1**, with Flyway-managed schema migrations via the native (non-JDBC) Cassandra connector.
 

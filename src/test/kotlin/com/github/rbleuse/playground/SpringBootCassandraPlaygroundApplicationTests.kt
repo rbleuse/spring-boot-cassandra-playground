@@ -1,4 +1,4 @@
-package com.github.rbleuse.springbootcassandra6
+package com.github.rbleuse.playground
 
 import com.datastax.oss.driver.api.core.ConsistencyLevel
 import com.datastax.oss.driver.api.core.CqlSession
@@ -21,7 +21,7 @@ import java.time.Duration
 
 @DataCassandraTest
 @Import(CassandraConfiguration::class, CassandraFlywayNcAutoConfiguration::class)
-class SpringBootCassandra6ApplicationTests @Autowired constructor(
+class SpringBootCassandraPlaygroundApplicationTests @Autowired constructor(
     private val cqlSession: CqlSession
 ) {
     companion object {
