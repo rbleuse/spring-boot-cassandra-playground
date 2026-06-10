@@ -45,6 +45,8 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers-cassandra")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter")
     testImplementation("io.kotest:kotest-assertions-core-jvm:6.1.11")
+    testImplementation("com.github.f4b6a3:uuid-creator:6.1.1")
+    testImplementation("io.hypersistence:hypersistence-tsid:2.1.4")
     testImplementation("io.github.rbleuse:spring-boot-starter-flyway-nc-cassandra-test")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

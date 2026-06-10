@@ -4,9 +4,12 @@ import com.datastax.oss.driver.api.core.ConsistencyLevel
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.SimpleStatement
 import com.datastax.oss.driver.api.core.servererrors.InvalidQueryException
+import com.github.f4b6a3.uuid.alt.GUID
 import io.github.rbleuse.flywaync.cassandra.CassandraFlywayNcAutoConfiguration
+import io.hypersistence.tsid.TSID
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.throwable.shouldHaveMessage
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -18,13 +21,23 @@ import org.testcontainers.cassandra.CassandraContainer
 import org.testcontainers.utility.DockerImageName
 import org.testcontainers.utility.MountableFile
 import java.time.Duration
+import java.time.Instant
+import java.util.function.IntFunction
 
 @DataCassandraTest
 @Import(CassandraConfiguration::class, CassandraFlywayNcAutoConfiguration::class)
 class SpringBootCassandraPlaygroundApplicationTests @Autowired constructor(
-    private val cqlSession: CqlSession
+    private val cqlSession: CqlSession,
+    private val uuidV7EventRepository: UuidV7EventRepository,
+    private val snowflakeEventRepository: SnowflakeEventRepository,
 ) {
     companion object {
+        private val snowflakeIdFactory = TSID.Factory.builder()
+            .withRandomFunction(IntFunction { ByteArray(it) })
+            .withCustomEpoch(Instant.ofEpochMilli(SnowflakeIdValidator.EPOCH_MILLIS))
+            .withNode(0)
+            .build()
+
         @ServiceConnection
         val cassandra: CassandraContainer = CassandraContainer(
             DockerImageName
@@ -41,6 +54,35 @@ class SpringBootCassandraPlaygroundApplicationTests @Autowired constructor(
     @BeforeEach
     fun cleanup() {
         cqlSession.execute("TRUNCATE users_by_country;")
+        cqlSession.execute("TRUNCATE uuid_v7_events;")
+        cqlSession.execute("TRUNCATE snowflake_events;")
+    }
+
+    @Test
+    fun `should persist an event using a UUID v7 partition key`() {
+        val id = GUID.v7().toUUID()
+
+        uuidV7EventRepository.save(UuidV7Event(id, "uuid-v7"))
+
+        id.version() shouldBe 7
+        uuidV7EventRepository.findById(id).get().payload shouldBe "uuid-v7"
+    }
+
+    @Test
+    fun `should persist a valid Snowflake partition key and reject a future value`() {
+        val id = snowflakeIdFactory.generate().toLong()
+
+        snowflakeEventRepository.save(SnowflakeEvent(id, "snowflake"))
+
+        snowflakeEventRepository.findById(id).get().payload shouldBe "snowflake"
+        shouldThrowExactly<IllegalArgumentException> {
+            SnowflakeEvent(Long.MAX_VALUE, "future")
+        }.message shouldBe "Snowflake ID timestamp must not be in the future"
+        shouldThrowExactly<InvalidQueryException> {
+            cqlSession.execute(
+                "INSERT INTO snowflake_events (id, payload) VALUES (0, 'invalid')"
+            )
+        }
     }
 
     @Test
