@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "2.4.10"
     kotlin("plugin.spring") version "2.4.10"
-    id("org.springframework.boot") version "4.1.1"
+    id("org.springframework.boot") version "4.2.0-M1"
     id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -24,11 +24,11 @@ repositories {
     }
 }
 
-extra["flyway.version"] = "12.7.0"
+extra["flyway.version"] = "13.4.0"
 
 dependencyManagement {
     imports {
-        mavenBom("io.github.rbleuse:spring-boot-flyway-nc-dependencies:1.0.0")
+        mavenBom("io.github.rbleuse:spring-boot-flyway-nc-dependencies:2.0.0-SNAPSHOT")
     }
 }
 
