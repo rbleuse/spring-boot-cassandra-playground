@@ -1,4 +1,4 @@
-package com.github.rbleuse.playground
+package io.github.rbleuse.playground
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.CqlSessionBuilder

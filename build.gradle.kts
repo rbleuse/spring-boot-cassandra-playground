@@ -28,7 +28,7 @@ extra["flyway.version"] = "12.7.0"
 
 dependencyManagement {
     imports {
-        mavenBom("io.github.rbleuse:spring-boot-flyway-nc-dependencies:1.0.0-SNAPSHOT")
+        mavenBom("io.github.rbleuse:spring-boot-flyway-nc-dependencies:1.0.0")
     }
 }
 

@@ -1,6 +1,6 @@
 services:
   cassandra:
-    image: rbleuse/apache-cassandra:6.0-alpha1
+    image: cassandra:6.0-alpha2
     volumes:
       - ./dev-tools/cassandra.yaml:/etc/cassandra/cassandra.yaml
     environment:

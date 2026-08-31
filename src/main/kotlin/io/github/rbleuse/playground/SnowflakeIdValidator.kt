@@ -1,4 +1,4 @@
-package com.github.rbleuse.playground
+package io.github.rbleuse.playground
 
 import java.time.Clock
 

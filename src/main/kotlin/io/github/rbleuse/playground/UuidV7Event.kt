@@ -1,4 +1,4 @@
-package com.github.rbleuse.playground
+package io.github.rbleuse.playground
 
 import org.springframework.data.cassandra.core.mapping.PrimaryKey
 import org.springframework.data.cassandra.core.mapping.Table

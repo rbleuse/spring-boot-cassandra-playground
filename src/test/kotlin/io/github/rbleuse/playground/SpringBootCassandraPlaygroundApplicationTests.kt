@@ -1,4 +1,4 @@
-package com.github.rbleuse.playground
+package io.github.rbleuse.playground
 
 import com.datastax.oss.driver.api.core.ConsistencyLevel
 import com.datastax.oss.driver.api.core.CqlSession
@@ -41,8 +41,7 @@ class SpringBootCassandraPlaygroundApplicationTests @Autowired constructor(
         @ServiceConnection
         val cassandra: CassandraContainer = CassandraContainer(
             DockerImageName
-                .parse("rbleuse/apache-cassandra:6.0-alpha1")
-                .asCompatibleSubstituteFor("cassandra")
+                .parse("cassandra:6.0-alpha2")
         )
             .withEnv("CASSANDRA_ENDPOINT_SNITCH", "GossipingPropertyFileSnitch")
             .withCopyFileToContainer(
@@ -75,14 +74,16 @@ class SpringBootCassandraPlaygroundApplicationTests @Autowired constructor(
         snowflakeEventRepository.save(SnowflakeEvent(id, "snowflake"))
 
         snowflakeEventRepository.findById(id).get().payload shouldBe "snowflake"
+
         shouldThrowExactly<IllegalArgumentException> {
             SnowflakeEvent(Long.MAX_VALUE, "future")
-        }.message shouldBe "Snowflake ID timestamp must not be in the future"
+        }.shouldHaveMessage("Snowflake ID timestamp must not be in the future")
+
         shouldThrowExactly<InvalidQueryException> {
             cqlSession.execute(
                 "INSERT INTO snowflake_events (id, payload) VALUES (0, 'invalid')"
             )
-        }
+        }.shouldHaveMessage("Column value does not satisfy value constraint for column 'id'. It should be id > 0")
     }
 
     @Test
