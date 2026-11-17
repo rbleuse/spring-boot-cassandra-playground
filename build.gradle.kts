@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "2.4.10"
-    kotlin("plugin.spring") version "2.4.10"
+    kotlin("jvm") version "2.4.21"
+    kotlin("plugin.spring") version "2.4.21"
     id("org.springframework.boot") version "4.2.0-M1"
     id("io.spring.dependency-management") version "1.1.7"
 }
@@ -24,7 +24,7 @@ repositories {
     }
 }
 
-extra["flyway.version"] = "13.4.0"
+extra["flyway.version"] = "13.12.2"
 
 dependencyManagement {
     imports {
@@ -44,7 +44,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.testcontainers:testcontainers-cassandra")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:6.2.4")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:6.2.5")
     testImplementation("com.github.f4b6a3:uuid-creator:6.1.1")
     testImplementation("io.hypersistence:hypersistence-tsid:2.1.4")
     testImplementation("io.github.rbleuse:spring-boot-starter-flyway-nc-cassandra-test")
